@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="FuelTrack Pro – Daily fuel station management dashboard for Nigerian petrol stations." />
+  <title>FuelTrack Pro | Fuel Station Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-fuel="petrol">
+
+<!-- ======================== SIDEBAR ======================== -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <span class="logo-icon">⛽</span>
+    <span class="logo-text">FuelTrack <strong>Pro</strong></span>
+  </div>
+  <nav class="sidebar-nav">
+    <button class="nav-item active" data-view="dashboard" id="nav-dashboard">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <span>Dashboard</span>
+    </button>
+    <button class="nav-item" data-view="history" id="nav-history">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      <span>History</span>
+    </button>
+    <button class="nav-item" data-view="settings" id="nav-settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+      <span>Settings</span>
+    </button>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="version-tag">v1.0 MVP</div>
+  </div>
+</aside>
+
+<!-- ======================== APP WRAPPER ======================== -->
+<div class="app-wrapper">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="hamburger" id="hamburger" aria-label="Toggle sidebar">
+        <span></span><span></span><span></span>
+      </button>
+      <h1 class="page-title" id="page-title">Dashboard</h1>
+    </div>
+    <div class="fuel-tabs">
+      <button class="fuel-tab active" id="tab-petrol" data-fuel="petrol">
+        <span class="dot dot-petrol"></span> Petrol
+      </button>
+      <button class="fuel-tab" id="tab-diesel" data-fuel="diesel">
+        <span class="dot dot-diesel"></span> Diesel
+      </button>
+    </div>
+    <div class="topbar-right">
+      <div class="datetime-block">
+        <span class="topbar-date" id="topbar-date"></span>
+        <span class="topbar-time" id="topbar-time"></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ======================== MAIN CONTENT ======================== -->
+  <main class="content">
+
+    <!-- ====== DASHBOARD VIEW ====== -->
+    <section class="view active" id="view-dashboard">
+
+      <!-- Stats Cards -->
+      <div class="stats-grid">
+        <div class="stat-card" id="sc-opening">
+          <div class="stat-icon">🛢️</div>
+          <div class="stat-info">
+            <div class="stat-label">Opening Stock</div>
+            <div class="stat-value" id="sc-opening-val">—</div>
+            <div class="stat-sub" id="sc-opening-sub">No data yet</div>
+          </div>
+          <div class="tank-bar-wrap"><div class="tank-bar" id="tb-opening"></div></div>
+        </div>
+        <div class="stat-card" id="sc-closing">
+          <div class="stat-icon">📉</div>
+          <div class="stat-info">
+            <div class="stat-label">Closing Stock</div>
+            <div class="stat-value" id="sc-closing-val">—</div>
+            <div class="stat-sub" id="sc-closing-sub">No data yet</div>
+          </div>
+          <div class="tank-bar-wrap"><div class="tank-bar" id="tb-closing"></div></div>
+        </div>
+        <div class="stat-card" id="sc-sold">
+          <div class="stat-icon">⚡</div>
+          <div class="stat-info">
+            <div class="stat-label">Est. Litres Sold</div>
+            <div class="stat-value" id="sc-sold-val">—</div>
+            <div class="stat-sub" id="sc-sold-sub">No record today</div>
+          </div>
+        </div>
+        <div class="stat-card" id="sc-revenue">
+          <div class="stat-icon">💵</div>
+          <div class="stat-info">
+            <div class="stat-label">Revenue</div>
+            <div class="stat-value" id="sc-revenue-val">—</div>
+            <div class="stat-sub" id="sc-revenue-sub">No record today</div>
+          </div>
+        </div>
+        <div class="stat-card" id="sc-profit">
+          <div class="stat-icon">📈</div>
+          <div class="stat-info">
+            <div class="stat-label">Profit</div>
+            <div class="stat-value" id="sc-profit-val">—</div>
+            <div class="stat-sub" id="sc-profit-sub">No record today</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alert Zone -->
+      <div id="alert-zone"></div>
+
+      <!-- Dashboard Grid: Form + Preview -->
+      <div class="dashboard-grid">
+
+        <!-- Entry Form -->
+        <div class="card">
+          <div class="card-header">
+            <h2>Daily Entry</h2>
+            <span class="fuel-badge" id="form-fuel-badge">Petrol</span>
+          </div>
+          <form id="entry-form" autocomplete="off">
+
+            <div class="form-row">
+              <div class="form-group full">
+                <label for="input-date">📅 Date</label>
+                <input type="date" id="input-date" required />
+              </div>
+            </div>
+
+            <div class="form-section-title">🌅 Morning Reading</div>
+            <div class="form-row">
+              <div class="form-group full">
+                <label for="input-open-h">Dipstick Height (ft)</label>
+                <input type="number" id="input-open-h" min="0" max="10" step="0.01" placeholder="e.g. 7.5" />
+                <small class="hint" id="hint-open">— litres</small>
+              </div>
+            </div>
+
+            <div class="form-section-title">🚛 Purchases (leave 0 if none)</div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="input-purchases">Litres Purchased</label>
+                <input type="number" id="input-purchases" min="0" step="0.01" placeholder="0" />
+              </div>
+              <div class="form-group">
+                <label for="input-cost">Cost Price (₦/L)</label>
+                <input type="number" id="input-cost" min="0" step="0.01" placeholder="e.g. 1200" />
+              </div>
+            </div>
+
+            <div class="form-section-title">💰 Selling Price</div>
+            <div class="form-row">
+              <div class="form-group full">
+                <label for="input-sell">Selling Price (₦/L)</label>
+                <input type="number" id="input-sell" min="0" step="0.01" placeholder="e.g. 1350" />
+              </div>
+            </div>
+
+            <div class="form-section-title">🌙 Evening Reading</div>
+            <div class="form-row">
+              <div class="form-group full">
+                <label for="input-close-h">Dipstick Height (ft)</label>
+                <input type="number" id="input-close-h" min="0" max="10" step="0.01" placeholder="e.g. 4.2" />
+                <small class="hint" id="hint-close">— litres</small>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn-outline" id="btn-clear-form">Clear</button>
+              <button type="submit" class="btn-primary" id="btn-save">💾 Save Record</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Live Preview Panel -->
+        <div class="card preview-card">
+          <div class="card-header">
+            <h2>Live Calculations</h2>
+            <span class="live-badge">LIVE</span>
+          </div>
+          <div class="preview-body">
+            <div class="calc-row">
+              <span class="calc-label">Opening Stock</span>
+              <span class="calc-val" id="p-open">— L</span>
+            </div>
+            <div class="calc-row">
+              <span class="calc-label">+ Purchases</span>
+              <span class="calc-val" id="p-purch">— L</span>
+            </div>
+            <div class="calc-row">
+              <span class="calc-label">− Closing Stock</span>
+              <span class="calc-val" id="p-close">— L</span>
+            </div>
+            <div class="calc-divider"></div>
+            <div class="calc-row highlight-row">
+              <span class="calc-label">Est. Litres Sold</span>
+              <span class="calc-val bold" id="p-sold">— L</span>
+            </div>
+            <div class="calc-row">
+              <span class="calc-label">Revenue</span>
+              <span class="calc-val" id="p-revenue">₦ —</span>
+            </div>
+            <div class="calc-row success-row">
+              <span class="calc-label">Profit</span>
+              <span class="calc-val bold" id="p-profit">₦ —</span>
+            </div>
+          </div>
+
+          <!-- Overnight Analysis -->
+          <div class="overnight-box" id="overnight-box" style="display:none">
+            <div class="overnight-title">📊 Overnight Analysis</div>
+            <div class="calc-row">
+              <span class="calc-label">Yesterday's Closing</span>
+              <span class="calc-val" id="p-yest-close">— L</span>
+            </div>
+            <div class="calc-row">
+              <span class="calc-label">Today's Opening</span>
+              <span class="calc-val" id="p-today-open">— L</span>
+            </div>
+            <div class="calc-row" id="overnight-diff-row">
+              <span class="calc-label">Overnight Difference</span>
+              <span class="calc-val bold" id="p-diff">— L</span>
+            </div>
+          </div>
+
+          <!-- Tank Gauge -->
+          <div class="gauge-section">
+            <div class="gauge-label">Tank Level (Closing)</div>
+            <div class="gauge-track">
+              <div class="gauge-fill" id="gauge-fill"></div>
+              <span class="gauge-pct" id="gauge-pct">—%</span>
+            </div>
+            <div class="gauge-range"><span>0 L</span><span>16,990 L</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== HISTORY VIEW ====== -->
+    <section class="view" id="view-history">
+      <div class="card">
+        <div class="card-header">
+          <h2>📋 Record History</h2>
+          <div class="history-controls">
+            <select id="filter-fuel" class="filter-select">
+              <option value="all">All Fuel Types</option>
+              <option value="petrol">Petrol</option>
+              <option value="diesel">Diesel</option>
+            </select>
+            <input type="month" id="filter-month" class="filter-input" title="Filter by month" />
+            <button class="btn-outline" id="btn-reset-filter">Reset</button>
+            <button class="btn-danger-sm" id="btn-delete-selected">🗑 Delete Selected</button>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table class="history-table" id="history-table">
+            <thead>
+              <tr>
+                <th><input type="checkbox" id="chk-all" title="Select all" /></th>
+                <th>Date</th>
+                <th>Fuel</th>
+                <th>Opening (L)</th>
+                <th>Purchases (L)</th>
+                <th>Closing (L)</th>
+                <th>Sold (L)</th>
+                <th>Revenue (₦)</th>
+                <th>Profit (₦)</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="history-body"></tbody>
+          </table>
+        </div>
+        <div id="history-empty" class="empty-state" style="display:none">
+          <div class="empty-icon">📋</div>
+          <p>No records found. Start by saving a daily entry.</p>
+        </div>
+        <!-- Summary Footer -->
+        <div class="history-summary" id="history-summary" style="display:none">
+          <div class="summary-item"><span>Total Sold</span><strong id="sum-sold">—</strong></div>
+          <div class="summary-item"><span>Total Revenue</span><strong id="sum-revenue">—</strong></div>
+          <div class="summary-item"><span>Total Profit</span><strong id="sum-profit">—</strong></div>
+          <div class="summary-item"><span>Records</span><strong id="sum-count">—</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== SETTINGS VIEW ====== -->
+    <section class="view" id="view-settings">
+      <div class="settings-grid">
+
+        <!-- Tank Info -->
+        <div class="card">
+          <div class="card-header"><h2>🛢️ Tank Configuration</h2></div>
+          <div class="info-grid">
+            <div class="info-row"><span>Shape</span><strong>Rectangular</strong></div>
+            <div class="info-row"><span>Length</span><strong>10 ft</strong></div>
+            <div class="info-row"><span>Width</span><strong>6 ft</strong></div>
+            <div class="info-row"><span>Depth (Max Height)</span><strong>10 ft</strong></div>
+            <div class="info-row"><span>Max Capacity</span><strong>16,990 L</strong></div>
+            <div class="info-row"><span>Litres per Foot</span><strong>1,699 L/ft</strong></div>
+          </div>
+          <div class="dipstick-table">
+            <div class="dip-title">📏 Dipstick Reference Chart</div>
+            <table>
+              <thead><tr><th>Height (ft)</th><th>Litres</th><th>% Full</th></tr></thead>
+              <tbody id="dip-chart-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Petrol Settings -->
+        <div class="card">
+          <div class="card-header"><h2><span class="dot dot-petrol"></span> Petrol Defaults</h2></div>
+          <div class="form-group">
+            <label for="s-petrol-sell">Default Selling Price (₦/L)</label>
+            <input type="number" id="s-petrol-sell" min="0" step="0.01" />
+          </div>
+          <div class="form-group">
+            <label for="s-petrol-cost">Last Known Cost Price (₦/L)</label>
+            <input type="number" id="s-petrol-cost" min="0" step="0.01" />
+          </div>
+          <button class="btn-primary" id="btn-save-petrol">Save Petrol Defaults</button>
+        </div>
+
+        <!-- Diesel Settings -->
+        <div class="card">
+          <div class="card-header"><h2><span class="dot dot-diesel"></span> Diesel Defaults</h2></div>
+          <div class="form-group">
+            <label for="s-diesel-sell">Default Selling Price (₦/L)</label>
+            <input type="number" id="s-diesel-sell" min="0" step="0.01" />
+          </div>
+          <div class="form-group">
+            <label for="s-diesel-cost">Last Known Cost Price (₦/L)</label>
+            <input type="number" id="s-diesel-cost" min="0" step="0.01" />
+          </div>
+          <button class="btn-primary" id="btn-save-diesel">Save Diesel Defaults</button>
+        </div>
+
+        <!-- Alerts -->
+        <div class="card">
+          <div class="card-header"><h2>⚠️ Alert Threshold</h2></div>
+          <div class="form-group">
+            <label for="s-threshold">Loss Warning Threshold (Litres)</label>
+            <input type="number" id="s-threshold" min="1" step="1" value="20" />
+            <small class="hint">Show warning if overnight loss exceeds this amount.</small>
+          </div>
+          <button class="btn-primary" id="btn-save-alerts">Save Alert Settings</button>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="card danger-card">
+          <div class="card-header"><h2>💀 Danger Zone</h2></div>
+          <p class="danger-note">This will permanently delete all saved records. This cannot be undone.</p>
+          <button class="btn-danger" id="btn-nuke">Clear All Data</button>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Confirm Modal -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="modal">
+    <div class="modal-title" id="modal-title">Confirm</div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-actions">
+      <button class="btn-outline" id="modal-cancel">Cancel</button>
+      <button class="btn-danger" id="modal-confirm">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
